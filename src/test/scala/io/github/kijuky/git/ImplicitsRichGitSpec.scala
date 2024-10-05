@@ -1,32 +1,115 @@
 package io.github.kijuky.git
 
-import io.github.kijuky.git.Implicits.RichGit
-import org.eclipse.jgit.api.Git
+import io.github.kijuky.git.GitRepoFixture.withGitRepo
+import io.github.kijuky.git.Implicits._
 import org.scalatest.funspec.AnyFunSpec
 
-import java.io.File
-import scala.language.postfixOps
-import scala.util.control.Exception.ultimately
-import scala.sys.process._
-
 class ImplicitsRichGitSpec extends AnyFunSpec {
-  def withRepository(testCode: Git => Any): Unit = {
-    val dirName = "repo"
-    s"mkdir $dirName" !;
-    ultimately(s"rm -r $dirName" !) {
-      s"git init $dirName -b main" !
-      val git = Git.open(new File(dirName))
-      testCode(git)
+  describe("#branch") {
+    it("should be able to get branches") {
+      withGitRepo(
+        Seq(
+          // Setup
+          "touch file",
+          "git add file",
+          "git commit -m initial"
+        )
+      ) { sut =>
+        // Exercise
+        val actual = sut.allBranches
+
+        // Verify
+        val allBranchNames = actual.map(_.name)
+        assert(allBranchNames == Seq("refs/heads/main"))
+      }
     }
   }
 
-  describe("Implicits.RichGit") {
-    it("should be able to get branches") {
-      withRepository { git =>
-        // When
-        val branches = git.branches
-        // Then
-        assert(branches.nonEmpty)
+  describe("#tags") {
+    it("should be able to get tags") {
+      withGitRepo(
+        Seq(
+          // Setup
+          "touch file",
+          "git add file",
+          "git commit -m initial",
+          "git tag tag"
+        )
+      ) { sut =>
+        // Exercise
+        val actual = sut.tags
+
+        // Verify
+        val tagNames = actual.map(_.name)
+        assert(tagNames == Seq("refs/tags/tag"))
+      }
+    }
+  }
+
+  describe("#commits") {
+    it("should be able to get commits") {
+      withGitRepo(
+        Seq(
+          // Setup
+          "touch file",
+          "git add file",
+          "git commit -m initial",
+          "git branch feature",
+          "git switch feature",
+          "touch file2",
+          "git add file2",
+          "git commit -m second"
+        )
+      ) { sut =>
+        // Exercise
+        val actual = sut.commits("main", "HEAD")
+
+        // Verify
+        val commitMessages = actual.map(_.fullMessage)
+        assert(commitMessages == Seq("second\n"))
+      }
+    }
+  }
+
+  describe("#diffs") {
+    it("should be able to get unstaged diffs") {
+      withGitRepo(
+        Seq(
+          // Setup
+          "touch file",
+          "touch file2",
+          "git add file"
+        )
+      ) { sut =>
+        // Exercise
+        val actual = sut.unstagedDiffs
+
+        // Verify
+        val diffNames = actual.map(_.newPath)
+        assert(diffNames == Seq("file2"))
+      }
+    }
+
+    it("should be able t get diffs") {
+      withGitRepo(
+        Seq(
+          // Setup
+          "touch file",
+          "git add file",
+          "git commit -m initial",
+          "git branch feature",
+          "git switch feature",
+          "touch file2",
+          "git add file2",
+          "git commit -m second"
+        )
+      ) { sut =>
+        // Exercise
+        val actual = sut.diffs("main", "HEAD")
+
+        // Verify
+        val diffNames = actual.map(_.newPath)
+        assert(diffNames == Seq("file2"))
       }
     }
   }
