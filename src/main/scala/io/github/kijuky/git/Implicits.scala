@@ -13,6 +13,9 @@ import scala.util.{Failure, Success, Try}
 import scala.util.control.Exception.ultimately
 
 object Implicits {
+  def createGitClient(path: String = "."): Git =
+    Git.open(new java.io.File(path))
+
   implicit class RichGit(git: Git) {
     def repository: Repository = git.getRepository
 
