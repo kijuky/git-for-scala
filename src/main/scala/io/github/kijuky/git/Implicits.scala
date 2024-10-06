@@ -4,17 +4,18 @@ import org.eclipse.jgit.api.{Git, ListBranchCommand}
 import org.eclipse.jgit.diff.{DiffEntry, DiffFormatter}
 import org.eclipse.jgit.errors.InvalidObjectIdException
 import org.eclipse.jgit.lib.{ObjectId, PersonIdent, Ref, Repository}
-import org.eclipse.jgit.revwalk.{RevCommit, RevWalk}
 import org.eclipse.jgit.revwalk.filter.RevFilter
+import org.eclipse.jgit.revwalk.{RevCommit, RevWalk}
 
+import java.io.File
 import java.time.Instant
 import scala.collection.JavaConverters._
-import scala.util.{Failure, Success, Try}
 import scala.util.control.Exception.ultimately
+import scala.util.{Failure, Success, Try}
 
 object Implicits {
   def createGitClient(path: String = "."): Git =
-    Git.open(new java.io.File(path))
+    Git.open(new File(path))
 
   implicit class RichGit(git: Git) {
     def repository: Repository = git.getRepository
