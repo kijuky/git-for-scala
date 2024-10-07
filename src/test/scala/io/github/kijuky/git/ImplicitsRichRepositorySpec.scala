@@ -14,7 +14,7 @@ class ImplicitsRichRepositorySpec extends AnyFunSpec {
           "git add file",
           "git commit -m initial"
         )
-      ) { git =>
+      ) { implicit git =>
         val ref = git.allBranches.filter(_.name == "refs/heads/main").head
         val sut = git.repository
 

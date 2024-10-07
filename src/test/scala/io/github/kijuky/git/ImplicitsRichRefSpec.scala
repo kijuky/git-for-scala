@@ -14,7 +14,7 @@ class ImplicitsRichRefSpec extends AnyFunSpec {
           "git add file",
           "git commit -m initial"
         )
-      ) { git =>
+      ) { implicit git =>
         val ref = git.allBranches.filter(_.getName == "refs/heads/main").head
 
         // Exercise
@@ -35,7 +35,7 @@ class ImplicitsRichRefSpec extends AnyFunSpec {
           "git add file",
           "git commit -m initial"
         )
-      ) { git =>
+      ) { implicit git =>
         val ref = git.allBranches.filter(_.getName == "refs/heads/main").head
 
         // Exercise

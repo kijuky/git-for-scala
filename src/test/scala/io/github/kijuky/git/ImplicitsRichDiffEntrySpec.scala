@@ -15,7 +15,7 @@ class ImplicitsRichDiffEntrySpec extends AnyFunSpec {
           "git commit -m initial",
           "rm file"
         )
-      ) { git =>
+      ) { implicit git =>
         val sut = git.unstagedDiffs.head
 
         // Exercise
@@ -34,7 +34,7 @@ class ImplicitsRichDiffEntrySpec extends AnyFunSpec {
           // Setup
           "touch file"
         )
-      ) { git =>
+      ) { implicit git =>
         val sut = git.unstagedDiffs.head
 
         // Exercise

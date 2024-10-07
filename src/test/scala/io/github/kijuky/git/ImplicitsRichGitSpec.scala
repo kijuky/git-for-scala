@@ -14,7 +14,7 @@ class ImplicitsRichGitSpec extends AnyFunSpec {
           "git add file",
           "git commit -m initial"
         )
-      ) { sut =>
+      ) { implicit sut =>
         // Exercise
         val actual = sut.allBranches
 
@@ -35,7 +35,7 @@ class ImplicitsRichGitSpec extends AnyFunSpec {
           "git commit -m initial",
           "git tag tag"
         )
-      ) { sut =>
+      ) { implicit sut =>
         // Exercise
         val actual = sut.tags
 
@@ -60,7 +60,7 @@ class ImplicitsRichGitSpec extends AnyFunSpec {
           "git add file2",
           "git commit -m second"
         )
-      ) { sut =>
+      ) { implicit sut =>
         // Exercise
         val actual = sut.commits("main", "HEAD")
 
@@ -80,7 +80,7 @@ class ImplicitsRichGitSpec extends AnyFunSpec {
           "touch file2",
           "git add file"
         )
-      ) { sut =>
+      ) { implicit sut =>
         // Exercise
         val actual = sut.unstagedDiffs
 
@@ -103,7 +103,7 @@ class ImplicitsRichGitSpec extends AnyFunSpec {
           "git add file2",
           "git commit -m second"
         )
-      ) { sut =>
+      ) { implicit sut =>
         // Exercise
         val actual = sut.diffs("main", "HEAD")
 

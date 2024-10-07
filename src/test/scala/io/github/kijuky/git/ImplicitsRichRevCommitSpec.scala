@@ -15,7 +15,7 @@ class ImplicitsRichRevCommitSpec extends AnyFunSpec {
           "git add file",
           "git commit -m initial"
         )
-      ) { git =>
+      ) { implicit git =>
         val ref = git.allBranches.filter(_.name == "refs/heads/main").head
         val Some(sut) = git.repository.revCommit(ref): @unchecked
 
@@ -37,7 +37,7 @@ class ImplicitsRichRevCommitSpec extends AnyFunSpec {
           "git add file",
           "git commit -m initial"
         )
-      ) { git =>
+      ) { implicit git =>
         val ref = git.allBranches.filter(_.name == "refs/heads/main").head
         val Some(sut) = git.repository.revCommit(ref): @unchecked
 
@@ -64,7 +64,7 @@ class ImplicitsRichRevCommitSpec extends AnyFunSpec {
           "git commit -m second --date 1609426800",
           "git rebase HEAD~ --committer-date-is-author-date"
         )
-      ) { git =>
+      ) { implicit git =>
         val ref = git.allBranches.filter(_.name == "refs/heads/main").head
         val Some(sut) = git.repository.revCommit(ref): @unchecked
 
@@ -88,7 +88,7 @@ class ImplicitsRichRevCommitSpec extends AnyFunSpec {
           "git commit -m second --date 1609426800",
           "git rebase HEAD~ --committer-date-is-author-date"
         )
-      ) { git =>
+      ) { implicit git =>
         val ref = git.allBranches.filter(_.name == "refs/heads/main").head
         val Some(sut) = git.repository.revCommit(ref): @unchecked
 
@@ -110,7 +110,7 @@ class ImplicitsRichRevCommitSpec extends AnyFunSpec {
           "git add file",
           "git commit -m initial"
         )
-      ) { git =>
+      ) { implicit git =>
         val ref = git.allBranches.filter(_.name == "refs/heads/main").head
         val Some(sut) = git.repository.revCommit(ref): @unchecked
 
