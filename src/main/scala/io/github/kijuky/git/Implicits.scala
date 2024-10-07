@@ -18,6 +18,7 @@ object Implicits {
     Git.open(new File(path))
 
   implicit class RichGit(git: Git) {
+    private implicit val implicitGit: Git = git
     def repository: Repository = git.getRepository
 
     def remoteBranches: Seq[Ref] =
@@ -80,7 +81,7 @@ object Implicits {
       }
   }
 
-  implicit class RichRepository(repo: Repository) {
+  implicit class RichRepository(repo: Repository)(implicit git: Git) {
     def revCommit(ref: Ref): Option[RevCommit] =
       ref.objectId.map(objectId => revWalk(_.parseCommit(objectId)))
     private def revWalk[T](openF: RevWalk => T): T =
@@ -95,9 +96,12 @@ object Implicits {
     def fullMessage: String = revCommit.getFullMessage
   }
 
-  implicit class RichRef(ref: Ref) {
+  implicit class RichRef(ref: Ref)(implicit git: Git) {
     def name: String = ref.getName
     def objectId: Option[ObjectId] = Option(ref.getObjectId)
+    def revCommit: Option[RevCommit] = git.repository.revCommit(ref)
+    def commitTimeInstant: Option[Instant] = revCommit.map(_.commitTimeInstant)
+    def authorEmailAddress: Option[String] = revCommit.map(_.authorEmailAddress)
   }
 
   implicit class RichDiffEntry(diffEntry: DiffEntry) {
