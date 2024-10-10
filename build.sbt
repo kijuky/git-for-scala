@@ -7,7 +7,7 @@ lazy val root = project
     libraryDependencies ++= Seq(
       "org.eclipse.jgit" % "org.eclipse.jgit" % "7.0.0.202409031743-r",
       "org.scalatest" %% "scalatest" % "3.2.19" % Test,
-      "org.slf4j" % "slf4j-simple" % "1.7.36" % Test
+      "org.slf4j" % "slf4j-simple" % "2.0.16" % Test
     )
   )
 
