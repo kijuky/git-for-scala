@@ -3,7 +3,7 @@ lazy val root = project
   .settings(
     name := "git-for-scala",
     scalaVersion := "2.12.20",
-    crossScalaVersions := Seq(scalaVersion.value, "3.3.4"),
+    crossScalaVersions := Seq(scalaVersion.value, "3.3.5"),
     libraryDependencies ++= Seq(
       "org.eclipse.jgit" % "org.eclipse.jgit" % "7.0.0.202409031743-r",
       "org.scalatest" %% "scalatest" % "3.2.19" % Test,
