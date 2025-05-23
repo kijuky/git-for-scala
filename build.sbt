@@ -5,7 +5,7 @@ lazy val root = project
     scalaVersion := "2.12.20",
     crossScalaVersions := Seq(scalaVersion.value, "3.3.4"),
     libraryDependencies ++= Seq(
-      "org.eclipse.jgit" % "org.eclipse.jgit" % "7.0.0.202409031743-r",
+      "org.eclipse.jgit" % "org.eclipse.jgit" % "7.0.1.202505221510-r",
       "org.scalatest" %% "scalatest" % "3.2.19" % Test,
       "org.slf4j" % "slf4j-simple" % "1.7.36" % Test
     )
